@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
+import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
 import TaskDetail from "./pages/TaskDetail";
@@ -8,7 +9,9 @@ import GetStarted from "./pages/GetStarted";
 
 export default function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="tasks" element={<Tasks />} />
@@ -17,5 +20,6 @@ export default function App() {
         <Route path="get-started" element={<GetStarted />} />
       </Route>
     </Routes>
+    </>
   );
 }
