@@ -75,7 +75,7 @@ export default function GetStarted() {
             <span className="workflow-card__step">1</span>
             <h3>Pick a task</h3>
             <p>
-              Browse the eight team objectives and choose one that matches your skills. Read the
+              Browse the fifteen team objectives and choose one that matches your skills. Read the
               goals and key files before writing code.
             </p>
             <Link to="/tasks" className="link-arrow">View objectives →</Link>

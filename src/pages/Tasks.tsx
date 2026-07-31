@@ -11,7 +11,7 @@ export default function Tasks() {
       <span className="page-header__eyebrow">Developer Objectives</span>
       <h1>Team Tasks</h1>
       <p>
-        Eight mission-critical workstreams for the RepoMind team. Each task has clear goals,
+        Fifteen mission-critical workstreams for the RepoMind team. Each task has clear goals,
         actionable steps, and the key files you will touch. Your work is done when the PR is open.
       </p>
     </header>
