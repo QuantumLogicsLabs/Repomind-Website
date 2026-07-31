@@ -7,9 +7,11 @@ interface TaskCardProps {
 }
 
 export default function TaskCard({ task }: TaskCardProps) {
+  const objectiveNumber = String(task.id).padStart(2, "0");
+
   return (
     <Link to={`/tasks/${task.slug}`} className="task-card" style={{ "--accent": task.accent } as CSSProperties}>
-      <div className="task-card__number">0{task.id}</div>
+      <div className="task-card__number">{objectiveNumber}</div>
       <h3 className="task-card__title">{task.title}</h3>
       <p className="task-card__goal">{task.goal}</p>
       <span className="task-card__cta">

@@ -6,6 +6,7 @@ import { tasks } from "../data/tasks";
 export default function TaskDetail() {
   const { slug } = useParams();
   const task = tasks.find((t) => t.slug === slug);
+  const objectiveNumber = String(task?.id ?? "").padStart(2, "0");
 
   if (!task) return <Navigate to="/tasks" replace />;
 
@@ -22,7 +23,7 @@ export default function TaskDetail() {
 
       <header className="task-detail__header">
         <PageBrand />
-        <span className="task-detail__badge">Objective 0{task.id}</span>
+        <span className="task-detail__badge">Objective {objectiveNumber}</span>
         <h1>{task.title}</h1>
         <p className="task-detail__goal">{task.goal}</p>
       </header>
