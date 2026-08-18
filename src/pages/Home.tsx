@@ -37,7 +37,7 @@ export default function Home() {
 
         <div className="hero__stats">
           <div className="stat">
-            <span className="stat__value">15</span>
+            <span className="stat__value">30</span>
             <span className="stat__label">Mission Objectives</span>
           </div>
           <div className="stat">
@@ -106,8 +106,8 @@ export default function Home() {
           <span className="section__eyebrow">Your Mission</span>
           <h2>Team objectives at a glance</h2>
           <p>
-            Fifteen focused workstreams to take RepoMind from prototype to production-grade agent.
-            Pick a task, ship a PR.
+            Thirty workstreams spanning production readiness and the next autonomous engineering
+            research phase. Pick a task, ship a PR.
           </p>
         </div>
 

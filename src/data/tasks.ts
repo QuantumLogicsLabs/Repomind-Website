@@ -3,9 +3,11 @@ export interface Task {
   title: string;
   slug: string;
   goal: string;
+  description?: string;
   objectives: string[];
   howToAccomplish: string[];
   keyFiles: string[];
+  definitionOfDone?: string;
   accent: string;
 }
 
@@ -342,7 +344,447 @@ export const tasks: Task[] = [
     keyFiles: ["agent/", "tools/", "config/", "docs/"],
     accent: "#4ade80",
   },
+  {
+    id: 16,
+    title: "Long-Term Repository Memory",
+    slug: "long-term-repository-memory",
+    goal: "Give RepoMind persistent semantic memory so it can remember repository architecture, previous changes, decisions, conventions, and execution history across independent agent runs.",
+    description:
+      "Provide repo-scoped semantic memory with durable retrieval so RepoMind can reason from historical architecture, decisions, and changes instead of fresh context alone.",
+    objectives: [
+      "Build persistent repository-level semantic memory",
+      "Store architectural decisions, conventions, and change history",
+      "Use embeddings and vector retrieval to recall relevant context",
+      "Separate repository memory from temporary job context",
+      "Support incremental memory updates without stale contamination",
+    ],
+    howToAccomplish: [
+      "Design a repository-scoped memory model with explicit memory types such as architecture facts, conventions, decisions, historical changes, and learned constraints.",
+      "Generate embeddings for durable repository knowledge and store them in a vector database.",
+      "Implement semantic retrieval that selects memories relevant to the current instruction, files, symbols, and planned changes.",
+      "Add memory lifecycle management including creation, update, deduplication, relevance scoring, and stale-memory invalidation.",
+      "Integrate retrieved memories into the planning context without exceeding model context limits.",
+      "Update repository memory after successful executions and pull requests.",
+      "Add tests for memory isolation, retrieval relevance, persistence, and stale-memory handling.",
+    ],
+    keyFiles: ["agent/", "memory/", "utils/", "config/", "api/", "tests/", "docs/"],
+    definitionOfDone:
+      "RepoMind can persist repository-specific semantic knowledge across runs, retrieve relevant historical context during planning, update memories after successful changes, and prevent unrelated or stale memories from influencing new tasks.",
+    accent: "#7dd3fc",
+  },
+  {
+    id: 17,
+    title: "Self-Reflective Agent Loops",
+    slug: "self-reflective-agent-loops",
+    goal: "Enable RepoMind to critique its own plans and generated changes, identify weaknesses, and autonomously revise them before committing.",
+    description:
+      "Add explicit reflection stages so the agent can evaluate a plan or diff, find blind spots, and self-correct within bounded iteration limits.",
+    objectives: [
+      "Add explicit reflection stages to agent execution",
+      "Critique plans before code modification",
+      "Review generated changes against the original instruction",
+      "Detect incomplete, inconsistent, or low-confidence solutions",
+      "Support bounded self-correction and retry loops",
+    ],
+    howToAccomplish: [
+      "Introduce a dedicated reflection stage between planning and execution.",
+      "Implement structured critique output containing identified issues, severity, evidence, and recommended corrections.",
+      "Compare planned changes against repository constraints and acceptance criteria.",
+      "Review generated diffs before commit.",
+      "Trigger bounded correction loops when reflection identifies actionable problems.",
+      "Track iteration history so the agent does not repeat the same failed reasoning.",
+      "Add termination criteria based on confidence, validation success, iteration limits, and unresolved risk.",
+      "Add tests covering successful reflection, correction, repeated failure, and maximum-iteration termination.",
+    ],
+    keyFiles: ["agent/", "prompts/", "tools/", "api/", "tests/", "config/"],
+    definitionOfDone:
+      "RepoMind can independently critique a plan or generated diff, revise its approach when appropriate, and terminate safely when additional reflection no longer improves the solution.",
+    accent: "#93c5fd",
+  },
+  {
+    id: 18,
+    title: "Code Knowledge Graph",
+    slug: "code-knowledge-graph",
+    goal: "Build a structural knowledge graph of the repository connecting files, modules, classes, functions, symbols, imports, inheritance, calls, and dependencies.",
+    description:
+      "Represent the repository as a real symbol-level graph so planning and impact analysis can reason beyond raw text similarity.",
+    objectives: [
+      "Parse repository source code into structured entities",
+      "Represent symbol relationships as a graph",
+      "Track definitions, references, imports, calls, and dependencies",
+      "Use graph relationships during planning and impact analysis",
+      "Support cross-file reasoning beyond raw text retrieval",
+    ],
+    howToAccomplish: [
+      "Build AST-based parsers for supported programming languages.",
+      "Extract files, modules, classes, functions, variables, imports, inheritance, calls, and symbol references.",
+      "Construct a graph containing nodes for code entities and edges for relationships.",
+      "Track source locations so graph entities can map back to exact files and lines.",
+      "Implement graph traversal for dependency and impact analysis.",
+      "Integrate graph context into agent planning.",
+      "Incrementally update affected graph regions after repository modifications.",
+      "Add tests for symbol extraction, relationships, graph traversal, and incremental updates.",
+    ],
+    keyFiles: ["agent/", "tools/", "utils/", "parser/", "tests/", "config/"],
+    definitionOfDone:
+      "RepoMind can construct and query a repository knowledge graph and use structural relationships between symbols and files to improve planning and impact analysis.",
+    accent: "#c4b5fd",
+  },
+  {
+    id: 19,
+    title: "Autonomous Test Generation",
+    slug: "autonomous-test-generation",
+    goal: "Enable RepoMind to infer behavioral changes from code modifications and generate targeted tests before creating a Pull Request.",
+    description:
+      "Turn code changes into behavioral coverage by inferring missing tests from the diff, repository patterns, and execution feedback.",
+    objectives: [
+      "Detect behavior changed by an agent modification",
+      "Identify existing test coverage",
+      "Generate missing tests automatically",
+      "Select appropriate testing strategies",
+      "Execute generated tests and refine failures",
+    ],
+    howToAccomplish: [
+      "Analyze the generated diff and identify changed behavior.",
+      "Locate existing tests associated with affected modules and symbols.",
+      "Infer missing behavioral coverage from the change and repository conventions.",
+      "Generate structured test cases rather than arbitrary test code.",
+      "Implement tests using the repository's existing testing framework and style.",
+      "Execute generated tests inside a controlled environment.",
+      "Diagnose failures and refine generated tests when failures indicate incorrect assumptions.",
+      "Include meaningful tests in the final change set.",
+    ],
+    keyFiles: ["agent/", "tools/", "tests/", "utils/", "config/"],
+    definitionOfDone:
+      "RepoMind can analyze a code change, identify meaningful missing behavioral coverage, generate repository-consistent tests, execute them, and include validated tests in the resulting PR.",
+    accent: "#f9a8d4",
+  },
+  {
+    id: 20,
+    title: "Semantic Code Search",
+    slug: "semantic-code-search",
+    goal: "Build hybrid semantic and lexical code retrieval so RepoMind can locate relevant implementation context without relying only on filenames or exact keyword matches.",
+    description:
+      "Use semantic retrieval for code context selection so planning can find the right modules, symbol boundaries, and dependency neighborhoods.",
+    objectives: [
+      "Implement embedding-based code retrieval",
+      "Combine semantic and lexical search",
+      "Retrieve relevant symbols and code regions",
+      "Support repository-scale RAG",
+      "Improve context selection for planning and execution",
+    ],
+    howToAccomplish: [
+      "Chunk source code according to semantic units such as classes, functions, modules, and configuration sections.",
+      "Generate embeddings for indexed code units.",
+      "Store embeddings with repository and symbol metadata.",
+      "Implement hybrid retrieval combining lexical search, semantic similarity, and structural relevance.",
+      "Add reranking to prioritize the most useful context.",
+      "Integrate retrieval into planner and executor context construction.",
+      "Prevent duplicate or excessively large context from being sent to the LLM.",
+      "Add retrieval-quality tests and benchmark representative repository queries.",
+    ],
+    keyFiles: ["agent/", "retrieval/", "tools/", "utils/", "config/", "tests/"],
+    definitionOfDone:
+      "RepoMind can semantically retrieve relevant code from large repositories and combine semantic, lexical, and structural signals to construct high-quality planning context.",
+    accent: "#a78bfa",
+  },
+  {
+    id: 21,
+    title: "Multi-Agent Software Engineer",
+    slug: "multi-agent-software-engineer",
+    goal: "Transform RepoMind from a single-agent workflow into a coordinated software-engineering system with specialized planning, coding, reviewing, and testing agents.",
+    description:
+      "Distribute software-engineering responsibilities across coordinated specialists while maintaining shared state and explicit ownership boundaries.",
+    objectives: [
+      "Separate software-engineering responsibilities across specialized agents",
+      "Coordinate agent communication",
+      "Maintain shared task state",
+      "Prevent conflicting modifications",
+      "Enable reviewer and tester agents to challenge implementation decisions",
+    ],
+    howToAccomplish: [
+      "Define specialized Planner, Coder, Reviewer, and Tester agents.",
+      "Establish typed messages and shared task state between agents.",
+      "Define ownership boundaries for repository modifications.",
+      "Implement orchestration rules for agent handoffs.",
+      "Allow Reviewer and Tester agents to reject or request revisions.",
+      "Prevent multiple agents from silently overwriting changes.",
+      "Track decisions and evidence produced by each agent.",
+      "Add integration tests for successful and failed multi-agent workflows.",
+    ],
+    keyFiles: ["agent/", "orchestration/", "tools/", "api/", "tests/"],
+    definitionOfDone:
+      "RepoMind can coordinate multiple specialized agents through a deterministic workflow where planning, implementation, review, and testing are separate responsibilities.",
+    accent: "#f59e0b",
+  },
+  {
+    id: 22,
+    title: "Dynamic Tool Selection",
+    slug: "dynamic-tool-selection",
+    goal: "Enable the agent to dynamically determine which repository tools are required instead of relying on a fixed execution sequence.",
+    description:
+      "Build tool-routing logic that inspects the task, repository state, and safety constraints before choosing the smallest viable execution path.",
+    objectives: [
+      "Discover available tools dynamically",
+      "Select tools based on task requirements",
+      "Reduce unnecessary tool calls",
+      "Validate tool selection before execution",
+      "Improve agent efficiency and adaptability",
+    ],
+    howToAccomplish: [
+      "Create machine-readable tool capabilities and preconditions.",
+      "Expose tool metadata to the planner or routing agent.",
+      "Implement dynamic tool selection based on task requirements and repository state.",
+      "Validate selected tools against permissions and safety constraints.",
+      "Track tool selection decisions and outcomes.",
+      "Allow fallback tools when the preferred tool fails.",
+      "Measure tool-selection accuracy and unnecessary tool usage.",
+    ],
+    keyFiles: ["agent/", "tools/", "config/", "api/", "tests/"],
+    definitionOfDone:
+      "RepoMind dynamically selects the smallest appropriate set of tools for a task while respecting tool capabilities, permissions, and safety constraints.",
+    accent: "#22c55e",
+  },
+  {
+    id: 23,
+    title: "Automatic Failure Recovery",
+    slug: "automatic-failure-recovery",
+    goal: "Enable RepoMind to diagnose execution failures, determine corrective actions, and retry failed workflows without restarting the entire job manually.",
+    description:
+      "Turn execution faults into structured recovery plans so the agent can isolate the issue and retry only the necessary stage.",
+    objectives: [
+      "Classify execution failures",
+      "Distinguish transient failures from deterministic failures",
+      "Diagnose root causes",
+      "Generate corrective actions",
+      "Retry failed stages safely",
+    ],
+    howToAccomplish: [
+      "Create structured failure categories for LLM, parsing, validation, Git, dependency, test, and environment failures.",
+      "Capture failure context and relevant execution state.",
+      "Implement failure diagnosis using structured agent reasoning.",
+      "Generate recovery strategies based on the failure category.",
+      "Retry only the affected execution stage when possible.",
+      "Track attempted recovery strategies to prevent loops.",
+      "Escalate unrecoverable failures with actionable diagnostics.",
+      "Add tests for transient failures, deterministic failures, successful recovery, and exhausted retries.",
+    ],
+    keyFiles: ["agent/", "tools/", "utils/", "api/", "tests/"],
+    definitionOfDone:
+      "RepoMind can diagnose common execution failures, perform bounded corrective retries, recover successful jobs without full restart, and produce actionable diagnostics when recovery fails.",
+    accent: "#f97316",
+  },
+  {
+    id: 24,
+    title: "Agent Evaluation Framework",
+    slug: "agent-evaluation-framework",
+    goal: "Create a reproducible evaluation system for measuring RepoMind's ability to solve real software-engineering tasks.",
+    description:
+      "Measure the quality of agent behavior with benchmark tasks, objective scoring, and regression tracking across different versions.",
+    objectives: [
+      "Build a benchmark dataset of repository tasks",
+      "Measure task completion and correctness",
+      "Evaluate generated patches",
+      "Track regression rates",
+      "Compare agent versions objectively",
+    ],
+    howToAccomplish: [
+      "Define a standardized task format containing repository, issue/instruction, expected behavior, and evaluation criteria.",
+      "Create isolated benchmark environments.",
+      "Run RepoMind against benchmark tasks automatically.",
+      "Evaluate patches using tests, static analysis, and task-specific criteria.",
+      "Track metrics such as task success rate, test pass rate, regression rate, retries, token usage, latency, and cost.",
+      "Store evaluation results for historical comparison.",
+      "Build regression detection between agent versions.",
+      "Add representative benchmark tasks covering planning, debugging, refactoring, and feature implementation.",
+    ],
+    keyFiles: ["evaluation/", "tests/", "agent/", "config/", "docs/"],
+    definitionOfDone:
+      "RepoMind has a reproducible benchmark harness capable of running standardized software-engineering tasks and producing comparable evaluation metrics across agent versions.",
+    accent: "#38bdf8",
+  },
+  {
+    id: 25,
+    title: "Learning From Previous Pull Requests",
+    slug: "learning-from-previous-prs",
+    goal: "Enable RepoMind to extract reusable engineering knowledge from historical Pull Requests, reviews, comments, and accepted or rejected changes.",
+    description:
+      "Turn PR history into repository-specific engineering intelligence so future planning learns from accepted patterns and avoids repeated mistakes.",
+    objectives: [
+      "Learn repository-specific engineering preferences",
+      "Store useful PR-derived knowledge",
+      "Incorporate reviewer feedback into future planning",
+      "Distinguish accepted patterns from rejected approaches",
+      "Avoid repeating previously rejected solutions",
+    ],
+    howToAccomplish: [
+      "Retrieve historical PR metadata, diffs, reviews, comments, and merge outcomes.",
+      "Extract reusable engineering decisions and reviewer preferences.",
+      "Convert useful information into structured repository memories.",
+      "Link learned knowledge to affected files, symbols, technologies, and patterns.",
+      "Retrieve relevant PR knowledge during future planning.",
+      "Track confidence and provenance for learned information.",
+      "Prevent low-quality or contradictory historical feedback from dominating decisions.",
+      "Add tests for PR knowledge extraction and retrieval.",
+    ],
+    keyFiles: ["agent/", "memory/", "tools/github_tool.py", "retrieval/", "tests/"],
+    definitionOfDone:
+      "RepoMind can learn repository-specific engineering knowledge from historical PR activity and use relevant validated knowledge during future tasks.",
+    accent: "#e879f9",
+  },
+  {
+    id: 26,
+    title: "Sandboxed Code Execution",
+    slug: "sandboxed-code-execution",
+    goal: "Execute generated code and validation workflows inside isolated environments before allowing changes to affect the target repository.",
+    description:
+      "Protect the host system by running generated code, tests, and validation workflows inside a resource-limited, non-persistent execution sandbox.",
+    objectives: [
+      "Isolate generated code execution",
+      "Prevent filesystem and network abuse",
+      "Limit CPU, memory, and execution time",
+      "Execute tests safely",
+      "Capture sandbox results for agent reasoning",
+    ],
+    howToAccomplish: [
+      "Design an isolated execution environment for generated code and tests.",
+      "Restrict filesystem access to the temporary workspace.",
+      "Apply CPU, memory, process, and timeout limits.",
+      "Control or disable network access by default.",
+      "Capture stdout, stderr, exit codes, and resource failures.",
+      "Destroy the sandbox after execution.",
+      "Prevent secrets from entering the execution environment.",
+      "Add security and isolation tests.",
+    ],
+    keyFiles: ["sandbox/", "tools/", "agent/", "config/", "tests/", "docs/"],
+    definitionOfDone:
+      "Generated code and tests execute in an isolated, resource-limited environment without direct access to the host system or protected credentials.",
+    accent: "#4ade80",
+  },
+  {
+    id: 27,
+    title: "Risk-Aware Autonomous Changes",
+    slug: "risk-aware-autonomous-changes",
+    goal: "Introduce confidence and risk assessment so RepoMind can determine when changes are safe to automate and when human approval is required.",
+    description:
+      "Add risk and confidence scoring so the agent can reject or escalate high-impact actions before making autonomous changes.",
+    objectives: [
+      "Calculate change risk",
+      "Estimate agent confidence",
+      "Detect sensitive or high-impact modifications",
+      "Introduce human approval gates",
+      "Prevent unsafe autonomous changes",
+    ],
+    howToAccomplish: [
+      "Define risk signals such as affected files, dependency centrality, public APIs, security-sensitive code, database changes, authentication logic, and test coverage.",
+      "Calculate a structured risk score for proposed changes.",
+      "Calculate confidence from planning quality, retrieval evidence, validation results, and reviewer agreement.",
+      "Define configurable thresholds for automatic execution versus human approval.",
+      "Require explicit approval for high-risk operations.",
+      "Include risk and confidence explanations in job results and PRs.",
+      "Add tests for low-, medium-, and high-risk changes.",
+    ],
+    keyFiles: ["agent/", "risk/", "api/", "config/", "tools/", "tests/"],
+    definitionOfDone:
+      "RepoMind evaluates every proposed change for risk and confidence and automatically requires human approval when configurable safety thresholds are exceeded.",
+    accent: "#fca5a5",
+  },
+  {
+    id: 28,
+    title: "Parallel Hypothesis Execution",
+    slug: "parallel-hypothesis-execution",
+    goal: "Allow RepoMind to explore multiple implementation strategies in isolated workspaces and select the strongest validated solution.",
+    description:
+      "Run competing solution strategies in parallel so the agent can compare evidence and retain the best validated path.",
+    objectives: [
+      "Generate multiple implementation hypotheses",
+      "Execute hypotheses independently",
+      "Compare validation results",
+      "Select the best solution automatically",
+      "Avoid contaminating competing attempts",
+    ],
+    howToAccomplish: [
+      "Generate multiple candidate plans for ambiguous or high-impact tasks.",
+      "Assign each candidate to an isolated workspace or Git branch.",
+      "Execute candidate implementations independently.",
+      "Run identical validation suites against each candidate.",
+      "Score candidates using correctness, test coverage, risk, complexity, and repository consistency.",
+      "Select the highest-quality validated candidate.",
+      "Preserve unsuccessful candidates for diagnostics without merging them.",
+      "Bound parallelism to control resource usage.",
+    ],
+    keyFiles: ["agent/", "orchestration/", "utils/", "tools/", "evaluation/", "tests/"],
+    definitionOfDone:
+      "RepoMind can safely explore multiple implementation hypotheses in parallel and select a validated solution using explicit evaluation criteria.",
+    accent: "#a5f3fc",
+  },
+  {
+    id: 29,
+    title: "Checkpoint & Rollback Engine",
+    slug: "checkpoint-rollback-engine",
+    goal: "Introduce transactional execution checkpoints so RepoMind can safely recover from failed or unsafe multi-stage modifications.",
+    description:
+      "Add stateful checkpoints that preserve valid repository snapshots so the agent can restore safe execution state after failure or rejection.",
+    objectives: [
+      "Create checkpoints throughout execution",
+      "Restore repository state safely",
+      "Roll back failed stages",
+      "Preserve execution history",
+      "Support recovery after crashes",
+    ],
+    howToAccomplish: [
+      "Define transactional execution boundaries.",
+      "Create checkpoints before high-impact modifications.",
+      "Persist checkpoint metadata and repository state references.",
+      "Restore the latest valid checkpoint after execution failure.",
+      "Integrate rollback with automatic failure recovery.",
+      "Prevent corrupted partial changes from reaching commits.",
+      "Support cleanup of obsolete checkpoints.",
+      "Add crash-recovery and rollback tests.",
+    ],
+    keyFiles: ["agent/", "utils/", "tools/", "api/", "tests/"],
+    definitionOfDone:
+      "RepoMind can checkpoint repository state during execution and reliably restore the latest valid state after failures, crashes, or rejected changes.",
+    accent: "#c4b5fd",
+  },
+  {
+    id: 30,
+    title: "Autonomous Issue-to-PR Pipeline",
+    slug: "autonomous-issue-to-pr-pipeline",
+    goal: "Enable RepoMind to autonomously transform a GitHub Issue into a validated implementation and Pull Request with minimal human intervention.",
+    description:
+      "Close the loop from issue intake to patch, validation, risk review, and PR publication with explicit approval gates for high-risk work.",
+    objectives: [
+      "Read and understand GitHub Issues",
+      "Convert issue requirements into an engineering plan",
+      "Locate affected repository components",
+      "Implement and validate the solution",
+      "Generate tests when required",
+      "Create a complete Pull Request automatically",
+      "Preserve human approval for risky changes",
+    ],
+    howToAccomplish: [
+      "Retrieve GitHub Issue descriptions, labels, comments, and relevant repository context.",
+      "Convert issue requirements and acceptance criteria into a structured engineering task.",
+      "Use repository memory, semantic search, and the code knowledge graph to identify affected components.",
+      "Generate and critique one or more implementation plans.",
+      "Execute the selected implementation in an isolated workspace.",
+      "Generate or update tests based on the changed behavior.",
+      "Run sandboxed validation, static analysis, and project tests.",
+      "Perform risk and confidence analysis.",
+      "Automatically recover from correctable failures.",
+      "Create a branch, commit validated changes, and generate a detailed Pull Request.",
+      "Include implementation summary, tests, validation results, risk assessment, and relevant agent reasoning evidence.",
+      "Require human approval whenever the configured risk threshold is exceeded.",
+    ],
+    keyFiles: ["api/", "agent/", "tools/", "orchestration/", "retrieval/", "memory/", "sandbox/", "risk/", "evaluation/", "tests/"],
+    definitionOfDone:
+      "A GitHub Issue can enter RepoMind as the initial input and, for sufficiently low-risk tasks, RepoMind can autonomously plan, implement, test, validate, recover from failures, assess risk, and create a production-ready Pull Request with complete traceability.",
+    accent: "#29c7ac",
+  },
 ];
+
+export const totalObjectives = tasks.length;
 
 export const completionCriteria =
   "A task is considered complete only after the Pull Request has been created and submitted for review.";
